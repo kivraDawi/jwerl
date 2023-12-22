@@ -44,7 +44,12 @@ sign(Data, Algorithm) ->
 % @end
 -spec sign(Data :: map() | list(), Algorithm :: algorithm(), KeyOrPem :: binary()) -> binary().
 sign(Data, Algorithm, KeyOrPem) when (is_map(Data) orelse is_list(Data)), is_atom(Algorithm), is_binary(KeyOrPem) ->
-    encode(jsx:encode(Data), config_headers(#{alg => algorithm_to_binary(Algorithm)}), KeyOrPem).
+  sign(Data, Algorithm, #{}, KeyOrPem).
+
+-spec sign(Data :: map() | list(), Algorithm :: algorithm(), Header :: map(), KeyOrPem :: binary()) -> binary().
+sign(Data, Algorithm, Header, KeyOrPem) when (is_map(Data) orelse is_list(Data)), is_atom(Algorithm), is_map(Header), is_binary(KeyOrPem) ->
+    MergedHeaders = maps:merge(#{alg => algorithm_to_binary(Algorithm)}, Header),
+    encode(jsx:encode(Data), config_headers(MergedHeaders), KeyOrPem).
 
 % @equiv verify(Data, <<"">>, hs256, #{}, #{})
 verify(Data) ->
