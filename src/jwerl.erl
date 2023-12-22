@@ -1,6 +1,6 @@
 -module(jwerl).
 
--export([sign/1, sign/2, sign/3,
+-export([sign/1, sign/2, sign/3, sign/4,
          verify/1, verify/2, verify/3, verify/4, verify/5,
          header/1]).
 
